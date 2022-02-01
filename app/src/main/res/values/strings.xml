@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Notes App</string>
+    <string name="add_new_item_description">يمكنك  إضافة ملاحظة إلى القائمة و اختيار نوع ولون الملاحظة.</string>
+    <string name="add">اضافة</string>
+    <string name="add_note_text">أضف ملاحظة</string>
+    <string name="add_note">تمت اضافة الملاحظة</string>
+    <string name="didnt_add_photo">لم تتم اضافة الملاحطة</string>
+    <string name="get_faild_to_add_photo">فشل في اضافة الصورة</string>
+    <string name="dosent_add_note">"لم تتم اضافة الملاحظة "</string>
+    <string name="has_change">تم التعديل بنجاح</string>
+    <string name="has_not_change">لم يتم التعديل بنجاح</string>
+</resources>

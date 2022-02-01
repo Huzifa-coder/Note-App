@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/grid" app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_grid_black"
+        tools:ignore="MenuTitle" />
+    <item android:id="@+id/list" app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_list_black"
+        android:title="TODO" android:visible="false" />
+</menu>
