@@ -79,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void deleteNote(int postion) {
-        AlertDialog alertDialog = new AlertDialog.Builder(R.string.shor_delet_item)
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.shor_delet_item))
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        alertDialog.dismiss();
+                        dialog.dismiss();
                     }
                 }).create();
         alertDialog.show();
