@@ -84,8 +84,9 @@ public class ShowInfOfActivity extends AppCompatActivity {
     }//end of onReturnInfoForMainActivity
 
     private void onSurePhoto() {
+        mUri = mIntentFromMainActivity.getData();
         imageView.setVisibility(View.VISIBLE);
-        imageView.setImageURI(mIntentFromMainActivity.getData());
+        imageView.setImageURI(mUri);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
