@@ -1,5 +1,6 @@
 package com.barmej.note;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -77,8 +79,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void deleteNote(int postion) {
-        notes.remove(postion);
-        noteAdpter.notifyItemRemoved(postion);
+        AlertDialog alertDialog = new AlertDialog.Builder(R.string.shor_delet_item)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        notes.remove(postion);
+                        noteAdpter.notifyItemRemoved(postion);
+                    }
+                }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                }).create();
+        alertDialog.show();
+
     }// end of deleteNote
 
 

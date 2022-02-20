@@ -9,4 +9,7 @@
     <string name="dosent_add_note">"لم تتم اضافة الملاحظة "</string>
     <string name="has_change">تم التعديل بنجاح</string>
     <string name="has_not_change">لم يتم التعديل بنجاح</string>
+    <string name="shor_delet_item">هل انت متاكد من انك تريد حذف العنصر</string>
+    <string name="yes">اجل</string>
+    <string name="no">لا</string>
 </resources>
