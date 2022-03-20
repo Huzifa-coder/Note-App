@@ -1,4 +1,4 @@
-package com.barmej.note;
+package com.barmej.note.ui;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,13 +15,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.barmej.note.R;
+import com.barmej.note.data.Note;
+import com.barmej.note.ui.viewModel.MainViewModel;
+import com.barmej.note.utiles.Constants;
 
 public class ShowInfOfActivity extends AppCompatActivity {
 
     private static final int REDE_PERMISSION_PHOTO = 100;
     private static final int CHANGE_PHOTO = 150;
+    private MainViewModel mainViewModel;
 
-    private Intent mIntentFromMainActivity;
     private Uri mUri;
     private EditText editText;
     private ImageView imageView;
@@ -36,18 +43,29 @@ public class ShowInfOfActivity extends AppCompatActivity {
         view = findViewById(R.id.layout_background);
         checkBox = findViewById(R.id.checkBox_show_activity);
         editText = findViewById(R.id.editeText_show_acitivity);
-        mIntentFromMainActivity = getIntent();
-        setColorBackground(mIntentFromMainActivity.getIntExtra(Constants.KEY_OF_INTENT_NOTE_COlOR, R.color.blue));
 
-        editText.setText(getIntent().getStringExtra(Constants.KEY_OF_INTENT_NOTE_DETILES));
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mainViewModel.getNote(getIntent().getIntExtra(Constants.KEY_OF_INTENT_NOTE_ID, -1)).observe(this, new Observer<Note>() {
+            @Override
+            public void onChanged(Note note) {
+                setColorBackground(note.getColor());
+                editText.setText(note.getDetiels());
+                if (note.isCheckBox()) {
+                    checkBox.setVisibility(View.VISIBLE);
+                    checkBox.setChecked(note.isClicked());
+                }
+                if(note.getImageUri() != null) {
+                    onSurePhoto(note);
+                }
+            }
+        });
 
-        if (mIntentFromMainActivity.getBooleanExtra(Constants.KEY_OF_INTENT_NOTE_CHEACKBOX, false))
-            checkBox.setVisibility(View.VISIBLE);
-
-        if (mIntentFromMainActivity.getData() != null) {
-            onSurePhoto();
-        }
-
+        findViewById(R.id.save_note_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onChangeNote();
+            }
+        });
     }//end of onCreate
 
     @Override
@@ -64,29 +82,25 @@ public class ShowInfOfActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null){
+        if (data.getData() != null){
             if(resultCode == RESULT_OK && requestCode == CHANGE_PHOTO ){
                 ChangePhoto(data);
+                getContentResolver().takePersistableUriPermission(data.getData(), Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
+        }else{
+            Toast.makeText(this, R.string.didnt_change_photo, Toast.LENGTH_SHORT).show();
         }
     }//end of onActivityResult
 
     private void onReturnInfoForMainActivity(){
-        if (!editText.getText().equals(mIntentFromMainActivity.getStringExtra(Constants.KEY_OF_INTENT_NOTE_DETILES))){
-            Intent mIntent = new Intent();
-            mIntent.putExtra(Constants.KEY_OF_INTENT_NOTE_DETILES, editText.getText().toString());
-            mIntent.putExtra(Constants.KEY_OF_INTENT_NOTE_POSTION, mIntentFromMainActivity.getIntExtra(Constants.KEY_OF_INTENT_NOTE_POSTION, -1));
-            mIntent.setData(mUri);
-            setResult(RESULT_OK, mIntent);
-        }
         finish();
-
     }//end of onReturnInfoForMainActivity
 
-    private void onSurePhoto() {
-        mUri = mIntentFromMainActivity.getData();
+    private void onSurePhoto(Note note) {
+        mUri = note.getImageUri();
         imageView.setVisibility(View.VISIBLE);
         imageView.setImageURI(mUri);
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +113,7 @@ public class ShowInfOfActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
-        intent.setFlags (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        intent.setFlags (Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivityForResult(intent, CHANGE_PHOTO);
     }//end of firePikePhoto
 
@@ -123,8 +137,17 @@ public class ShowInfOfActivity extends AppCompatActivity {
         view.setBackgroundColor(color);
     }//end of setColorBackground
 
-    @Override
-    public void onBackPressed() {
-        onReturnInfoForMainActivity();
+    private void onChangeNote(){
+        mainViewModel.getNote(getIntent().getIntExtra(Constants.KEY_OF_INTENT_NOTE_ID, -1)).observe(this, new Observer<Note>() {
+            @Override
+            public void onChanged(Note note) {
+                note.setDetiels(editText.getText().toString());
+                if (note.getImageUri() != null) note.setImageUri(mUri);
+                if(note.isCheckBox() == true) note.setClicked(checkBox.isChecked());
+                mainViewModel.updateNote(note);
+                finish();
+            }
+        });
+
     }
 }//end of ShowInfOfActivity

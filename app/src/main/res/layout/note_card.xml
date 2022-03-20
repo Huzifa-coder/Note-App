@@ -1,24 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <import type="android.content.res.Resources"/>
+        <variable
+            name="note"
+            type="com.barmej.note.data.Note" />
+
+    </data>
 <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp">
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:background="@color/blue"
-    android:layout_width="match_parent"
+        android:layout_width="match_parent"
+        android:background="@{note.checkBox?note.clicked?@color/green:note.color:note.color}"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
             android:padding="10dp"
             android:id="@+id/textView_note_show"
+            android:text="@{note.detiels}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <CheckBox
             android:id="@+id/checkBox_note_show"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible" />
+            android:checked="@{note.clicked}"
+            android:visibility="@{note.checkBox? View.VISIBLE : View.GONE}" />
+
+        <ImageView
+            android:id="@+id/imageView_note_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{note.imageUri==null?View.INVISIBLE:View.VISIBLE}"
+            android:src="@{note.imageUri}"
+            tools:srcCompat="@tools:sample/avatars" />
 
     </LinearLayout>
 </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+</layout>

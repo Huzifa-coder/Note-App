@@ -4,12 +4,15 @@
     <string name="add">اضافة</string>
     <string name="add_note_text">أضف ملاحظة</string>
     <string name="add_note">تمت اضافة الملاحظة</string>
-    <string name="didnt_add_photo">لم تتم اضافة الملاحطة</string>
+    <string name="didnt_add_photo">لم تتم اضافة الصورة</string>
     <string name="get_faild_to_add_photo">فشل في اضافة الصورة</string>
     <string name="dosent_add_note">"لم تتم اضافة الملاحظة "</string>
     <string name="has_change">تم التعديل بنجاح</string>
+    <string name="save">حفظ</string>
     <string name="has_not_change">لم يتم التعديل بنجاح</string>
-    <string name="shor_delet_item">هل انت متاكد من انك تريد حذف العنصر</string>
-    <string name="yes">اجل</string>
-    <string name="no">لا</string>
+    <string name="delet_item">تاكيد الحذف :</string>
+    <string name="yes">تاكيد</string>
+    <string name="no">الغاء</string>
+    <string name="add_text">اكتب ملاحظة</string>
+    <string name="didnt_change_photo">فشل في تعديل الصورة</string>
 </resources>
